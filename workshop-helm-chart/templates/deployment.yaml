@@ -17,6 +17,24 @@ spec:
     spec:
       containers:
         - name: container-name
-          image: nginx
+          image: {{ .Values.image }}
+          envFrom:
+          - secretRef:
+              name: app-secrets 
           ports:
           - containerPort: 80
+          resources:
+            requests:
+              memory: "0.5Gi"
+              cpu: "500m"
+            limits:
+              memory: "0.5Gi"
+              cpu: "500m"
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 80
+            failureThreshold: 20
+            periodSeconds: 10
+      imagePullSecrets:
+        - name: acr-secret

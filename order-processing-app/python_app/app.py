@@ -16,6 +16,9 @@ app.config.from_object(Config)
 initialise_database(app)
 initialise_scheduled_jobs(app)
 
+@app.route("/health")
+def health():
+    return "Health check successful" # TODO: Rebuild and push image, and then update helm chart to pick up new image
 
 @app.route("/")
 def index():
